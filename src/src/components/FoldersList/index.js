@@ -13,6 +13,9 @@ const FolderListItem = styled.div`
   background: ${props => props.pair ? 'white' : 'rgba(0, 0, 0, 0.02)'};
   display: flex;
   align-items: center;
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const FolderPath = styled.div`
