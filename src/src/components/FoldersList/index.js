@@ -32,6 +32,7 @@ const CheckBoxContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: ${props => props.pair ? 'white' : 'rgb(250, 250, 250)'};
+  cursor: pointer;
 `;
 
 const CheckBox = styled.div`
