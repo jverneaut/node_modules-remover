@@ -5,7 +5,7 @@ require('electron-reload')(__dirname, {
 });
 
 const getNodeModulesFolder = require('./lib/getNodeModulesFolders');
-const deleteFolders = require('./lib/deleteFolders');
+const moveFoldersToTrash = require('./lib/moveFoldersToTrash');
 
 let mainWindow;
 
@@ -39,6 +39,6 @@ ipcMain.on('selectFolder', (event, { folderPath, depth }) => {
   event.sender.send('nodeFoldersFound', folders);
 });
 
-ipcMain.on('deleteFolders', (event, { foldersToDelete }) => {
-  deleteFolders(foldersToDelete);
+ipcMain.on('trashFolders', (event, { foldersToTrash }) => {
+  moveFoldersToTrash(foldersToTrash);
 })

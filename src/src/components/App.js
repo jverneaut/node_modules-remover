@@ -57,8 +57,8 @@ class App extends Component {
   };
 
   deleteFolders = () => {
-    const foldersToDelete = this.state.folders.filter(folder => folder.delete);
-    ipcRenderer.send('deleteFolders', { foldersToDelete });
+    const foldersToTrash = this.state.folders.filter(folder => folder.delete);
+    ipcRenderer.send('trashFolders', { foldersToTrash });
   }
 
   render() {
