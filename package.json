@@ -5,6 +5,7 @@
   "license": "MIT",
   "homepage": "./",
   "dependencies": {
+    "electron-is-dev": "^0.3.0",
     "electron-reload": "^1.2.5",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -12,8 +13,8 @@
     "trash": "^4.3.0"
   },
   "devDependencies": {
-    "electron": "^2.0.5",
     "concurrently": "^3.6.0",
+    "electron": "^2.0.5",
     "electron-builder": "^20.22.0",
     "react-scripts": "1.1.4",
     "wait-on": "^2.1.0"

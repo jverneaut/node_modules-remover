@@ -4,6 +4,8 @@ require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
 });
 
+const isDev = require('electron-is-dev');
+
 const getNodeModulesFolder = require('./lib/getNodeModulesFolders');
 const moveFoldersToTrash = require('./lib/moveFoldersToTrash');
 
@@ -13,7 +15,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({ width: 736, height: 512, titleBarStyle: 'hiddenInset' });
   process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
-  mainWindow.loadURL('http://localhost:3000');
+  mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 
   mainWindow.on('closed', () => {
     mainWindow = null;
