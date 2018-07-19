@@ -86,7 +86,13 @@ class App extends Component {
           <Button text="Sélectionner un dossier" outline label>
             <FileInput />
           </Button>
+          <Button
+            disabled={
+              this.state.folders === undefined ? 'true' :
+                this.state.folders.filter(folder => folder.delete).length === 0 ? true : false
+            }
             text="Supprimer les dossiers sélectionnés" onClick={this.confirmToTrash}
+          />
         </ButtonsGroup>
       </AppContainer>
     )
