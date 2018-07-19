@@ -27,7 +27,8 @@ const ButtonsGroup = styled.div`
 
 class App extends Component {
   state = {
-    folders: undefined
+    folders: undefined,
+    movingToTrash: false
   }
 
   componentDidMount() {
@@ -38,6 +39,22 @@ class App extends Component {
         delete: true,
       }));
       this.setState({ folders });
+    });
+
+    ipcRenderer.on('confirm-dialog-selection', (event, index) => {
+      if (index === 0) {
+        const foldersToTrash = this.state.folders.filter(folder => folder.delete);
+        ipcRenderer.send('trashFolders', { foldersToTrash });
+        this.setState({ movingToTrash: true });
+      }
+    })
+
+    ipcRenderer.on('foldersMovedToTrash', () => {
+      const remainingFolders = this.state.folders.filter(folder => !folder.delete);
+      this.setState({
+        movingToTrash: false,
+        folders: remainingFolders
+      })
     });
   }
 
@@ -56,9 +73,8 @@ class App extends Component {
     this.setState({ folders });
   };
 
-  deleteFolders = () => {
-    const foldersToTrash = this.state.folders.filter(folder => folder.delete);
-    ipcRenderer.send('trashFolders', { foldersToTrash });
+  confirmToTrash = () => {
+    ipcRenderer.send('open-confirm-dialog');
   }
 
   render() {
@@ -70,7 +86,7 @@ class App extends Component {
           <Button text="Sélectionner un dossier" outline label>
             <FileInput />
           </Button>
-          <Button text="Supprimer les dossiers sélectionnés" onClick={this.deleteFolders} />
+            text="Supprimer les dossiers sélectionnés" onClick={this.confirmToTrash}
         </ButtonsGroup>
       </AppContainer>
     )

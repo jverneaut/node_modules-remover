@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, dialog, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
@@ -39,6 +39,30 @@ ipcMain.on('selectFolder', (event, { folderPath, depth }) => {
   event.sender.send('nodeFoldersFound', folders);
 });
 
-ipcMain.on('trashFolders', (event, { foldersToTrash }) => {
-  moveFoldersToTrash(foldersToTrash);
+ipcMain.on('trashFolders', async (event, { foldersToTrash }) => {
+  try {
+    await moveFoldersToTrash(foldersToTrash, ipcMain);
+    const options = {
+      type: 'info',
+      title: 'All folders moved to trash.',
+      message: "All done, enjoy your free space.",
+      buttons: ['Thanks!']
+    }
+    dialog.showMessageBox(options);
+    event.sender.send('foldersMovedToTrash');
+  } catch (err) {
+    console.log(err);
+  }
 })
+
+ipcMain.on('open-confirm-dialog', event => {
+  const options = {
+    type: 'info',
+    title: 'Move selected folders to trash?',
+    message: "Are you sure you want to move the selected folders to trash? Make sure to check them all before proceeding.",
+    buttons: ['Yes', 'No']
+  }
+  dialog.showMessageBox(options, index => {
+    event.sender.send('confirm-dialog-selection', index)
+  })
+});
