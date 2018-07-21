@@ -83,15 +83,16 @@ class App extends Component {
         <TitleBar />
         <FoldersList folders={this.state.folders} onRowClick={this.rowClickHandler} />
         <ButtonsGroup>
-          <Button text="Sélectionner un dossier" outline label>
+          <Button text="Sélectionner un dossier" outline>
             <FileInput />
           </Button>
           <Button
+            text="Supprimer les dossiers sélectionnés"
             disabled={
               this.state.folders === undefined ? 'true' :
                 this.state.folders.filter(folder => folder.delete).length === 0 ? true : false
             }
-            text="Supprimer les dossiers sélectionnés" onClick={this.confirmToTrash}
+            onClick={this.confirmToTrash}
           />
         </ButtonsGroup>
       </AppContainer>

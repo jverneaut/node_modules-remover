@@ -16,8 +16,12 @@ const Background = styled.label`
 `;
 
 const Button = (props) => (
-  <Background outline={props.outline} onClick={!props.disabled && props.onClick} disabled={props.disabled}>
-    {props.children && props.children}
+  <Background
+    outline={props.outline}
+    onClick={props.onClick !== undefined ? (!props.disabled ? props.onClick : undefined) : undefined}
+    disabled={props.disabled}
+  >
+    {props.children}
     {props.text}
   </Background>
 )
