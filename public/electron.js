@@ -50,14 +50,8 @@ ipcMain.on('selectFolder', (event, { folderPath, depth }) => {
 
 ipcMain.on('trashFolders', async (event, { foldersToTrash }) => {
   try {
+    event.sender.send('foldersMovingToTrash');
     await moveFoldersToTrash(foldersToTrash, ipcMain);
-    const options = {
-      type: 'info',
-      title: 'All folders moved to trash.',
-      message: "All done, enjoy your free space.",
-      buttons: ['Thanks!']
-    }
-    dialog.showMessageBox(options);
     event.sender.send('foldersMovedToTrash');
   } catch (err) {
     console.log(err);

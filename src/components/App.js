@@ -45,9 +45,14 @@ class App extends Component {
       if (index === 0) {
         const foldersToTrash = this.state.folders.filter(folder => folder.delete);
         ipcRenderer.send('trashFolders', { foldersToTrash });
-        this.setState({ movingToTrash: true });
       }
     })
+
+    ipcRenderer.on('foldersMovingToTrash', () => {
+      this.setState({
+        movingToTrash: true
+      })
+    });
 
     ipcRenderer.on('foldersMovedToTrash', () => {
       const remainingFolders = this.state.folders.filter(folder => !folder.delete);
@@ -81,7 +86,11 @@ class App extends Component {
     return (
       <AppContainer>
         <TitleBar />
-        <FoldersList folders={this.state.folders} onRowClick={this.rowClickHandler} />
+        <FoldersList
+          disabled={this.state.movingToTrash}
+          folders={this.state.folders}
+          onRowClick={this.rowClickHandler}
+        />
         <ButtonsGroup>
           <Button text="Sélectionner un dossier" outline>
             <FileInput />

@@ -7,6 +7,8 @@ const FoldersListContainer = styled.div`
   background: rgba(0, 0, 0, 0.02);
   overflow-y: scroll;
   flex: 1;
+  transition: 0.3s all;
+  opacity: ${props => props.disabled && 0.5};
 `;
 
 const FolderListItem = styled.div`
@@ -14,7 +16,7 @@ const FolderListItem = styled.div`
   display: flex;
   align-items: center;
   &:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: ${props => !props.disabled && 'rgba(0, 0, 0, 0.1)'};
   }
 `;
 
@@ -35,7 +37,7 @@ const CheckBoxContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: ${props => props.pair ? 'white' : 'rgb(250, 250, 250)'};
-  cursor: pointer;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
 `;
 
 const CheckBox = styled.div`
@@ -51,13 +53,18 @@ const CheckBox = styled.div`
 `;
 
 const FoldersList = (props) => (
-  <FoldersListContainer>
+  <FoldersListContainer disabled={props.disabled}>
     {props.folders !== undefined && props.folders.map((folder, index) => (
-      <FolderListItem pair={index % 2 === 0 ? true : false} key={folder.id} onClick={() => props.onRowClick(folder.id)}>
+      <FolderListItem
+        disabled={props.disabled}
+        pair={index % 2 === 0 ? true : false}
+        key={folder.id}
+        onClick={() => !props.disabled && props.onRowClick(folder.id)}
+      >
         <FolderPath checked={folder.delete}>
           {folder.path}
         </FolderPath>
-        <CheckBoxContainer pair={index % 2 === 0 ? true : false}>
+        <CheckBoxContainer disabled={props.disabled} pair={index % 2 === 0 ? true : false}>
           <CheckBox checked={folder.delete} />
         </CheckBoxContainer>
       </FolderListItem>
